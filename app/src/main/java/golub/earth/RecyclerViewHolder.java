@@ -9,12 +9,31 @@ import android.widget.TextView;
  */
 public class RecyclerViewHolder extends RecyclerView.ViewHolder{
 
-    private TextView place;
+    private TextView name;
 
     public RecyclerViewHolder(View itemView){
         super(itemView);
-        place = (TextView) itemView.findViewById(R.id.place);
+        name = (TextView) itemView.findViewById(R.id.name);
 
     }
 
+    public void bind(Feature feature){
+        String place = feature.getProperties().getPlace();
+        String[]array = place.split(" ");
+
+        StringBuilder builder = new StringBuilder();
+
+        for(int i = 0; i < array.length; i++){
+            if(array[i].equalsIgnoreCase("of")){
+                int count = i+1;
+                for(int j = count; j < array.length; j++){
+                    builder.append(array[j]);
+                    builder.append(" ");
+                }
+            }
+
+        }
+        name.setText(builder.toString());
+    }
 }
+

@@ -2,6 +2,8 @@ package golub.earth;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
@@ -13,17 +15,22 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView rv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        URL url = new URL("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
+        rv = (RecyclerView) findViewById(R.id.list);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(lm);
 
-        HttpURLConnection connection = url.openConnection();
-        InputStream in = connection.getInputStream();
+        EarthAsyncTask task= new EarthAsyncTask(rv);
+        //dont call doInBAckground cuz then will happen in same thread!
+        task.execute();
 
-        Gson gson = new Gson();
 
 
     }
